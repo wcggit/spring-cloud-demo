@@ -16,7 +16,6 @@
         <module>open-server-pay</module>
         <module>turbine</module>
         <module>common</module>
-        <module>lepluslife-merchant</module>
         <module>lepluslife-partner</module>
         <module>2pc-distribute</module>
     </modules>

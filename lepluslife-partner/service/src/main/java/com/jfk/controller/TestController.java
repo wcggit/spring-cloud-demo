@@ -1,5 +1,6 @@
-package jfk.controller;
+package com.jfk.controller;
 
+import com.jfk.domain.Partner;
 import com.jfk.dto.PartnerConsistent;
 import com.jfk.dto.PartnerDto;
 
@@ -12,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 
-import jfk.domain.Partner;
-import jfk.service.PartnerService;
+import com.jfk.service.PartnerService;
 
 /**
  * Created by wcg on 2016/11/13.

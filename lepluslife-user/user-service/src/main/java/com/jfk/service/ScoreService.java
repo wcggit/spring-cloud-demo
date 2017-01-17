@@ -33,6 +33,8 @@ public class ScoreService {
       score.setScore(score.getScore() - scoreA);
       if (scoreMapper.updateByPrimaryKey(score) == 1) {
         return new BooleanWrapper(true, "OK");
+      } else {
+        processScoreBalance(userId, scoreA);
       }
     }
     return new BooleanWrapper(false, "余额不足");

@@ -32,7 +32,6 @@ import javax.inject.Inject;
 @EnableEurekaClient
 @EnableFeignClients(basePackages = {"com.jfk.client"})
 @EnableScheduling
-
 public class OrderApplication {
 
   private static final Logger log = LoggerFactory.getLogger(OrderApplication.class);

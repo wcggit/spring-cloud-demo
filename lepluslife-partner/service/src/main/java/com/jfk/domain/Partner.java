@@ -1,4 +1,4 @@
-package jfk.domain;
+package com.jfk.domain;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

@@ -23,8 +23,12 @@ public interface OffLineOrderClient {
   @RequestMapping("/order")
   OffLineOrderDto testEventDistributeTransaction();
 
-  @RequestMapping(value = "/order/distribute",method = RequestMethod.POST,consumes = "application/json")
-  OffLineOrderDto test2pcDistributeTransaction(@RequestBody OfflineOrderConsistent offlineOrderConsistent);
+  @RequestMapping("/order/share")
+  OffLineOrderDto testEventDistributeTransactionUnited();
+
+  @RequestMapping(value = "/order/distribute", method = RequestMethod.POST, consumes = "application/json")
+  OffLineOrderDto test2pcDistributeTransaction(
+      @RequestBody OfflineOrderConsistent offlineOrderConsistent);
 
 
 }

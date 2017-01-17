@@ -20,75 +20,74 @@ import org.springframework.beans.factory.InitializingBean;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * 使用zk的leader选举功能, 实现一个服务部署多个实例时, 只允许一个实例下的定时任务是运行状态
- * Created by liubin on 2016/4/20.
+ * 使用zk的leader选举功能, 实现一个服务部署多个实例时, 只允许一个实例下的定时任务是运行状态 Created by liubin on 2016/4/20.
  */
 public class ZkSchedulerCoordinator implements InitializingBean, DisposableBean {
 
-    private static Logger logger = LoggerFactory.getLogger(ZkSchedulerCoordinator.class);
+  private static Logger logger = LoggerFactory.getLogger(ZkSchedulerCoordinator.class);
 
-    private ApplicationConstant applicationConstant;
+  private ApplicationConstant applicationConstant;
 
-    //是否为leader, 只有leader才能执行定时任务
-    private volatile boolean leader = false;
+  //是否为leader, 只有leader才能执行定时任务
 
-    private CountDownLatch latch = new CountDownLatch(1);
+  private CountDownLatch latch = new CountDownLatch(1);
 
-    private CuratorFramework client = null;
+  private CuratorFramework client = null;
 
-    private LeaderSelector selector = null;
+  private LeaderSelector selector = null;
 
-    public ZkSchedulerCoordinator(ApplicationConstant applicationConstant) {
-        this.applicationConstant = applicationConstant;
+  public ZkSchedulerCoordinator(ApplicationConstant applicationConstant) {
+    this.applicationConstant = applicationConstant;
+  }
+
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    String zkAddress = applicationConstant.zkAddress;
+    if (StringUtils.isBlank(zkAddress)) {
+      logger.warn("zkAddress 为空, ZkSchedulerCoordinator 停止运行");
+      return;
     }
+    String applicationName = applicationConstant.applicationName;
+    String path = ZkUtils.createZkSchedulerLeaderPath(applicationName);
+
+    logger.info("开始连接zookeeper, 进行scheduler leader选举, zkAddress:{}, path:{}", zkAddress, path);
+    RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
+    client = CuratorFrameworkFactory.newClient(zkAddress, retryPolicy);
+    client.start();
+
+    LeaderSelectorListener listener = new SchedulerLeaderSelector();
+    selector = new LeaderSelector(client, path, listener);
+    selector.autoRequeue();  // 保证失去的leader 可能重新变成leader
+    selector.start();
+
+  }
+
+  @Override
+  public void destroy() throws Exception {
+    if (selector != null) {
+      selector.close();
+    }
+    if (client != null) {
+      client.close();
+    }
+    latch.countDown();
+  }
+
+  public boolean isLeader() {
+    return selector.hasLeadership();
+  }
+
+  class SchedulerLeaderSelector extends LeaderSelectorListenerAdapter {
+
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        String zkAddress = applicationConstant.zkAddress;
-        if(StringUtils.isBlank(zkAddress)) {
-            logger.warn("zkAddress 为空, ZkSchedulerCoordinator 停止运行");
-            return;
-        }
-        String applicationName = applicationConstant.applicationName;
-        String path = ZkUtils.createZkSchedulerLeaderPath(applicationName);
-
-        logger.info("开始连接zookeeper, 进行scheduler leader选举, zkAddress:{}, path:{}", zkAddress, path);
-        RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
-        client = CuratorFrameworkFactory.newClient(zkAddress, retryPolicy);
-        client.start();
-
-        LeaderSelectorListener listener = new SchedulerLeaderSelector();
-        selector = new LeaderSelector(client, path, listener);
-//        selector.autoRequeue();  // not required, but this is behavior that you will probably expect
-        selector.start();
-
+    public void takeLeadership(CuratorFramework client) throws Exception {
+      logger.info("获取 scheduler leader");
+      latch.await();
+      logger.info("主动放弃 scheduler leader");
     }
+  }
 
-    @Override
-    public void destroy() throws Exception {
-        if(selector != null) {
-            selector.close();
-        }
-        if(client != null) {
-            client.close();
-        }
-        latch.countDown();
-    }
 
-    public boolean isLeader() {
-        return leader;
-    }
-
-    class SchedulerLeaderSelector extends LeaderSelectorListenerAdapter {
-
-        @Override
-        public void takeLeadership(CuratorFramework client) throws Exception {
-            logger.info("获取 scheduler leader");
-            leader = true;
-            latch.await();
-            logger.info("主动放弃 scheduler leader");
-            leader = false;
-        }
-    }
 
 }

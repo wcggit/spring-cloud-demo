@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Brixton.BUILD-SNAPSHOT</version>
+        <version>Camden.SR3</version>
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
@@ -48,19 +48,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.zhangfu</groupId>
-            <artifactId>fuiou-encrypt</artifactId>
-            <version>0.0.1</version>
-        </dependency>
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-parent</artifactId>
-                <version>Brixton.BUILD-SNAPSHOT</version>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Camden.SR3</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -68,16 +63,16 @@
     </dependencyManagement>
 
     <repositories>
-        <repository>
-            <id>releases</id>
-            <url>http://123.57.185.8:8054/nexus/content/groups/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
+        <!--<repository>-->
+            <!--<id>releases</id>-->
+            <!--<url>http://123.57.185.8:8054/nexus/content/groups/public</url>-->
+            <!--<releases>-->
+                <!--<enabled>true</enabled>-->
+            <!--</releases>-->
+            <!--<snapshots>-->
+                <!--<enabled>true</enabled>-->
+            <!--</snapshots>-->
+        <!--</repository>-->
         <repository>
             <id>spring-snapshots</id>
             <name>Spring Snapshots</name>

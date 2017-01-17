@@ -1,0 +1,9 @@
+server:
+  port: 8099
+  zkAddress: 192.168.99.100:2181
+
+logging:
+#    level.org.mybatis: DEBUG
+#    level.org.springframework.cloud.netflix: DEBUG
+#    level.org.springframework: DEBUG
+

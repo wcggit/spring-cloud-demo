@@ -47,6 +47,28 @@ public class PayController {
     }
   }
 
+
+  @RequestMapping("/order")
+  public ResponseEntity testEventDistribute() {
+    try {
+      return new ResponseEntity<String>(payService.testEventDistribute(),
+                                        HttpStatus.OK);
+    } catch (RuntimeException e) {
+      return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY).body("exception");
+    }
+  }
+
+
+  @RequestMapping("/order/share")
+  public ResponseEntity testEventDistributeUnited() {
+    try {
+      return new ResponseEntity<String>(payService.testEventDistributeUnited(),
+                                        HttpStatus.OK);
+    } catch (RuntimeException e) {
+      return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY).body("exception");
+    }
+  }
+
   @RequestMapping("/distribute")
   public ResponseEntity distribute() {
     try {

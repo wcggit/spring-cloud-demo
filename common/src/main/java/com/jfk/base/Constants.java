@@ -5,7 +5,7 @@ package com.jfk.base;
  */
 public interface Constants {
 
-    int ASK_TIMEOUT = 300000;
+    int ASK_TIMEOUT = 30000;
 
     int MAX_BATCH_QUERY_SIZE = 100;
 

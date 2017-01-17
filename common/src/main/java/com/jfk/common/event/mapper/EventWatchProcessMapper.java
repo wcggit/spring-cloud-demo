@@ -19,5 +19,5 @@ public interface EventWatchProcessMapper extends MyMapper<EventWatchProcess> {
   List<EventWatchProcess> findByStatus(@Param("status")String status);
 
   @SelectProvider(type = EventWatchProcessProvider.class, method = "updateStatusBatch")
-  int updateStatusBatch(@Param("ids") Long[] ids, @Param("status") String status);
+  void updateStatusBatch(@Param("ids") Long[] ids, @Param("status") String status);
 }

@@ -3,5 +3,38 @@ spring:
     name: order-service
   cloud:
     config:
-      uri: http://localhost:8888
-spring.cloud.config.enabled: @spring-cloud-enable@
+      uri: http://leplusconfig:8888
+---
+spring:
+    profiles: dev
+spring.cloud.config.enabled: false
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+#    registryFetchIntervalSeconds: 40 #抓取节点的时间
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+      appname: ${spring.application.name}
+      health-check-url: /health
+      prefer-ip-address: true
+      ip-address: ${host} # mesos/marathon populates this in the environment
+      non-secure-port: ${port} # mesos/marathon populates this in the environment
+---
+spring:
+    profiles: prod
+spring.cloud.config.enabled: true
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+#    registryFetchIntervalSeconds: 40 #抓取节点的时间
+    serviceUrl:
+      defaultZone: http://discovery1:8761/eureka/,http://discovery2:8762/eureka/
+    instance:
+  instance:
+      health-check-url: /health
+      prefer-ip-address: true
+      ip-address: ${host} # 注册到eureka上的ip 为宿主机IP
+      non-secure-port: ${port} # 宿主机上暴露的port

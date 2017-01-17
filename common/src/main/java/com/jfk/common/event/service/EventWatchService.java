@@ -119,10 +119,10 @@ public class EventWatchService {
             "EventWatch united为true, 但是askEventIds的size不为1, watchId: " + watchId);
       }
       eventWatch.setAskEventStatus(triggerStatus.name());
-      executeCallback(triggerStatus.equals(AskEventStatus.SUCCESS.name()), callbackClassName,
+      executeCallback(triggerStatus.name().equals(AskEventStatus.SUCCESS.name()), callbackClassName,
                       extraParams,
                       askEvents, failureInfo);
-      if (!triggerStatus.equals(AskEventStatus.SUCCESS.name())) {//进行撤销
+      if (!triggerStatus.name().equals(AskEventStatus.SUCCESS.name())) {//进行撤销
         for (AskRequestEventPublish ep : askEvents) {
           ep.setAskEventStatus(triggerStatus.name());
           askRequestEventPublishRepository.updateByPrimaryKey(ep);
@@ -207,7 +207,7 @@ public class EventWatchService {
       eventWatch.setAskEventStatus(AskEventStatus.SUCCESS.name());
       executeCallback(true, callbackClassName, extraParams,
                       askEvents, failureInfo);
-      eventWatchRepository.insert(eventWatch);
+      eventWatchRepository.updateByPrimaryKey(eventWatch);
 
     } else if (askEvents.stream()
         .allMatch(ep -> ep.getAskEventStatus().equals(AskEventStatus.PENDING.name()))) {
@@ -245,7 +245,7 @@ public class EventWatchService {
     if (failedStatus != null) {
 
       eventWatch.setAskEventStatus(failedStatus.name());
-      eventWatchRepository.insert(eventWatch);
+      eventWatchRepository.updateByPrimaryKey(eventWatch);
 
       //修改状态为PENDING或PENDING的askEvent到这个失败状态, 并且如果askEvent可以撤销, 进行撤销
       List<AskRequestEventPublish> failedEventProcessList = askEvents.stream()
@@ -254,7 +254,7 @@ public class EventWatchService {
           .collect(Collectors.toList());
       for (AskRequestEventPublish ep : failedEventProcessList) {
         ep.setAskEventStatus(failedStatus.name());
-        askRequestEventPublishRepository.insert(ep);
+        askRequestEventPublishRepository.updateByPrimaryKey(ep);
         if (eventRegistry.isEventRevokable(EventType.valueOf(ep.getEventType()))) {
           //撤销操作
           eventBus.publishRevokeEvent(ep.getEventId(), unitedFailedInfo);

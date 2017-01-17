@@ -1,10 +1,9 @@
-package jfk.mapper;
+package com.jfk.mapper;
 
 import com.jfk.base.mapper.MyMapper;
+import com.jfk.domain.PartnerScore;
 
 import org.apache.ibatis.annotations.Select;
-
-import jfk.domain.PartnerScore;
 
 /**
  * Created by wcg on 2016/12/15.

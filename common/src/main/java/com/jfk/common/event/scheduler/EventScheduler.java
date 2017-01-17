@@ -15,22 +15,22 @@ public class EventScheduler{
         this.eventBus = eventBus;
     }
 
-    @Scheduled(fixedRate = 10000L)
+    @Scheduled(fixedDelayString = "${server.event.delay}" )
     public void sendUnpublishedEvent() {
         eventBus.sendUnpublishedEvent();
     }
 
-    @Scheduled(fixedRate = 10000L)
+    @Scheduled(fixedDelayString = "${server.event.delay}")
     public void searchAndHandleUnprocessedEvent() {
         eventBus.searchAndHandleUnprocessedEvent();
     }
 
-    @Scheduled(fixedRate = 10000L)
+    @Scheduled(fixedDelayString = "${server.event.delay}")
     public void handleUnprocessedEventWatchProcess() {
         eventBus.handleUnprocessedEventWatchProcess();
     }
 
-    @Scheduled(fixedRate = 10000L)
+    @Scheduled(fixedDelayString = "${server.event.delay}")
     public void handleTimeoutEventWatch() {
         eventBus.handleTimeoutEventWatch();
     }

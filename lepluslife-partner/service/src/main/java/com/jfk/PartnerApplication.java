@@ -10,7 +10,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
@@ -29,9 +28,11 @@ import javax.inject.Inject;
 @SpringBootApplication
 @EnableFeignClients
 @EnableEurekaClient
-public class UserApplication {
+@EnableScheduling
+@Import({ EventConfiguration.class, SchedulerConfiguration.class})
+public class PartnerApplication {
 
-  private static final Logger log = LoggerFactory.getLogger(UserApplication.class);
+  private static final Logger log = LoggerFactory.getLogger(PartnerApplication.class);
 
   @Inject
   private Environment env;
@@ -46,7 +47,7 @@ public class UserApplication {
   }
 
   public static void main(String[] args) throws UnknownHostException {
-    SpringApplication app = new SpringApplication(UserApplication.class);
+    SpringApplication app = new SpringApplication(PartnerApplication.class);
     SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
     addDefaultProfile(app, source);
     app.run(args);

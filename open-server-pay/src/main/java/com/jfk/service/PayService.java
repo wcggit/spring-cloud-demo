@@ -52,4 +52,15 @@ public class PayService {
     );
     return 1;
   }
+
+  public String testEventDistribute() {
+    offLineOrderClient.testEventDistributeTransaction();
+    return "OK";
+  }
+
+  public String testEventDistributeUnited() {
+    offLineOrderClient.testEventDistributeTransactionUnited();
+    return "OK";
+
+  }
 }

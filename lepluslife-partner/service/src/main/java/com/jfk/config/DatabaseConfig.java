@@ -1,4 +1,4 @@
-package jfk.config;
+package com.jfk.config;
 
 /**
  * Created by wcg on 2016/11/13.

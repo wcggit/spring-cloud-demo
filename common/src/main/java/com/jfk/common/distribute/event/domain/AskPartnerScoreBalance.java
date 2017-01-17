@@ -45,6 +45,6 @@ public class AskPartnerScoreBalance extends AskEvent implements Revokable {
 
   @Override
   public String getType() {
-    return null;
+    return EVENT_TYPE;
   }
 }

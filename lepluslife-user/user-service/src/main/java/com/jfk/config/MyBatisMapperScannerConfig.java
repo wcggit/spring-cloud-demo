@@ -1,29 +1,29 @@
 package com.jfk.config;
 
 /**
-* Created by wcg on 2016/11/14.
-*/
+ * Created by wcg on 2016/11/14.
+ */
 
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 
 import java.util.Properties;
 
 import javax.inject.Inject;
 
+import tk.mybatis.spring.mapper.MapperScannerConfigurer;
+
 /**
-* MyBatis扫描接口，使用的tk.mybatis.spring.mapper.MapperScannerConfigurer，如果你不使用通用Mapper，可以改为org.xxx...
-*
-* @author liuzh
-* @since 2015-12-19 14:46
-*/
+ * MyBatis扫描接口，使用的tk.mybatis.spring.mapper.MapperScannerConfigurer，如果你不使用通用Mapper，可以改为org.xxx...
+ *
+ * @author liuzh
+ * @since 2015-12-19 14:46
+ */
 @Configuration
 //TODO 注意，由于MapperScannerConfigurer执行的比较早，所以必须有下面的注解
-@AutoConfigureAfter(MybatisConfig.class)
+@AutoConfigureBefore(MybatisConfig.class)
 public class MyBatisMapperScannerConfig {
 
   @Inject

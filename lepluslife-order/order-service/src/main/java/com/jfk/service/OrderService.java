@@ -87,33 +87,6 @@ public class OrderService {
     offLineOrderMapper.updateByPrimaryKey(offLineOrder);
   }
 
-//  public static void main(String[] args) {
-//    AskParameterBuilder.askOptional(Optional.of(new AskUserScoreBalance(1L, 100L)))
-//        .callbackClass(OrderPayCallBack.class)
-//        .addParam("orderSid", String.valueOf(111))
-//        .build();
-//    Method[] declaredMethods = OrderPayCallBack.class.getDeclaredMethods();
-//    for (Method declaredMethod : declaredMethods) {
-//        System.out.println(getParameterNames(declaredMethod));
-//    }
-//  }
-
-  public static List<String> getParameterNames(Method method) {
-    Parameter[] parameters = method.getParameters();
-    List<String> parameterNames = new ArrayList<>();
-
-    for (Parameter parameter : parameters) {
-      if (!parameter.isNamePresent()) {
-        throw new IllegalArgumentException("Parameter names are not present!");
-      }
-
-      String parameterName = parameter.getName();
-      parameterNames.add(parameterName);
-    }
-
-    return parameterNames;
-  }
-
   @DistributeTransaction
   public void test2PcDistribute(OffLineOrder offLineOrder, TransactionLock transactionLock) {
     offLineOrderMapper.insert(offLineOrder);

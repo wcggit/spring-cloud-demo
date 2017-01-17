@@ -14,7 +14,6 @@ import java.util.Properties;
  * Created by wcg on 2016/11/13.
  */
 @Configuration
-@AutoConfigureBefore(MybatisConfig.class)
 public class MybatisConfig {
 
   @Bean

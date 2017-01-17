@@ -1,4 +1,4 @@
-package jfk.handler;
+package com.jfk.handler;
 
 import com.jfk.base.api.BooleanWrapper;
 import com.jfk.base.event.constants.FailureInfo;
@@ -6,7 +6,7 @@ import com.jfk.common.distribute.event.domain.AskPartnerScoreBalance;
 import com.jfk.common.event.handler.RevokableAskEventHandler;
 import com.jfk.common.spring.ApplicationContextHolder;
 
-import jfk.service.PartnerScoreService;
+import com.jfk.service.PartnerScoreService;
 
 /**
  * Created by wcg on 2016/12/15.

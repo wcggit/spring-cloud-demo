@@ -1,8 +1,10 @@
 server:
   port: 8080
-  group: order
-  zkAddress: 192.168.99.100:2181
-
+  group: partner
+  zkAddress: 101.201.37.58:2181,59.110.48.123:2181,59.110.48.139:2181
+  brokers: 101.201.37.58:9092,59.110.48.123:9092,59.110.48.139:9092
+  event:
+    delay: 10000
 spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
@@ -16,7 +18,7 @@ spring:
                   instanceIndex: 0
                   kafka:
                     binder:
-                      brokers: 192.168.99.100:9092
+                      brokers: ${server.brokers}
                       zkNodes: ${server.zkAddress}
                       offsetUpdateTimeWindow: 10000
                       #offsetUpdateCount: 0
@@ -28,7 +30,7 @@ spring:
                         group: ${server.group}
                         consumer:
                           autoCommitOffset: true
-                          startOffset: earliest
+                          startOffset: latest
                           headerMode: raw
                       output:
                         group: ${server.group}
@@ -45,13 +47,6 @@ logging:
 #    level.com.jfk.mapper: DEBUG
 #    level.org.springframework: DEBUG
 #    level.com.netflix: DEBUG
-eureka:
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-#    registryFetchIntervalSeconds: 40 #抓取节点的时间
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
 feign:
   histrix:
     enabled: false

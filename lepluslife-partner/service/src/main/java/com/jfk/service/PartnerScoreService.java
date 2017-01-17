@@ -1,14 +1,13 @@
-package jfk.service;
+package com.jfk.service;
 
 import com.jfk.base.api.BooleanWrapper;
+import com.jfk.domain.PartnerScore;
+import com.jfk.mapper.PartnerScoreMapper;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-
-import jfk.domain.PartnerScore;
-import jfk.mapper.PartnerScoreMapper;
 
 /**
  * Created by wcg on 2016/12/14.
@@ -33,6 +32,8 @@ public class PartnerScoreService {
       score.setScore(score.getScore() - scoreA);
       if (scoreMapper.updateByPrimaryKey(score) == 1) {
         return new BooleanWrapper(true, "OK");
+      } else {
+        processScoreBalance(partnerId, scoreA);
       }
     }
     return new BooleanWrapper(false, "余额不足");

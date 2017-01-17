@@ -1,8 +1,11 @@
 server:
   port: 8082
   group: partner
-  zkAddress: 192.168.99.100:2181
-
+  zkAddress: 101.201.37.58:2181,59.110.48.123:2181,59.110.48.139:2181
+  brokers: 101.201.37.58:9092,59.110.48.123:9092,59.110.48.139:9092
+  event:
+    delay: 10000
+spring.cloud.stream.bindings.input.group: ${server.group}
 spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
@@ -14,9 +17,12 @@ spring:
         stream:
               instanceCount: 1
               instanceIndex: 0
+#              bindings:
+#                input:
+#                  group: ${server.group}
               kafka:
                 binder:
-                  brokers: 192.168.99.100:9092
+                  brokers: ${server.brokers}
                   zkNodes: ${server.zkAddress}
                   offsetUpdateTimeWindow: 10000
                   #offsetUpdateCount: 0
@@ -25,10 +31,10 @@ spring:
                   replicationFactor: 1
                 bindings:
                   input:
-                    group: ${server.group}
+#                    group: ${server.group}
                     consumer:
                       autoCommitOffset: true
-                      startOffset: earliest
+                      startOffset: latest
                       headerMode: raw
                   output:
                     group: ${server.group}
@@ -43,12 +49,6 @@ logging:
 #    level.org.mybatis: DEBUG
 #    level.org.springframework.cloud.netflix: DEBUG
 #    level.org.springframework: DEBUG
-eureka:
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
 feign:
   histrix:
     enabled: false
